@@ -1,0 +1,39 @@
+version: "2"
+
+networks:
+  internal:
+    driver: bridge
+
+services:
+    golang_service_golang_4:
+      build: "../"
+      volumes:
+        - ../realtime:/go/src/app
+      networks:
+         - internal
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.golang.rule=Host(`golang.localhost`)"
+        - "traefik.http.services.golang.loadbalancer.server.port=1000"
+
+  # go-docker-image:
+  #   build: ../
+  #   ports:
+  #     - '1000:1000'
+  #   volumes:
+  #     - ../:/app
+
+  # golang:
+  #   container_name: "golang"
+  #   image: "bitnami/golang:latest"
+  #   volumes:
+  #   - ../realtime:/bitnami
+  #   working_dir: "/bitnami"
+  #   command: "go run main.go"
+  #   networks:
+  #     - internal
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.golang.rule=Host(`golang.localhost`)"
+  #     - "traefik.http.services.golang.loadbalancer.server.port=1000"
+
